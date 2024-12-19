@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "../App.css";
+import { ReactTyped } from "react-typed";
 const MainPage = () => {
   const navigate = useNavigate();
 
@@ -14,7 +15,12 @@ const MainPage = () => {
         <div className="row py-5  m-0">
           <div className="col-12 text-center">
             <h1 className="display-3 mb-3 poppins-bold ">
-              Voizer: Real-time audio analyzer{" "}
+              <ReactTyped
+                strings={["Voizer: Real-time audio analyzer"]}
+                typeSpeed={50}
+                backSpeed={50}
+                loop
+              ></ReactTyped>
             </h1>
             <p className=" w-75 fs-4 mx-auto poppins-extralight">
               Analyze speech patterns in real-time using our pre-trained model

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import "../App.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { ScaleLoader } from "react-spinners";
 const LoadingPage = () => {
   const navigate = useNavigate();
 
@@ -21,13 +22,14 @@ const LoadingPage = () => {
         style={{ marginTop: "-60px" }}
       >
         <div className="text-center">
-          <div
+          {/* <div
             className="spinner-border text-primary"
             role="status"
             style={{ width: "4rem", height: "4rem" }}
           >
             <span className="visually-hidden">Loading...</span>
-          </div>
+          </div> */}
+          <ScaleLoader color="#021556" />
           <h2 className="mt-4 poppins-bold">We training the model.</h2>
           <p className="text-muted poppins-regular">
             This process may take some time. Why don't you pour yourself a cup
