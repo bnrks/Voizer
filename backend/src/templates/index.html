@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Speaker Recognition System</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <style>
+      .button {
+        padding: 10px 20px;
+        margin: 10px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      .recording {
+        background-color: #ff4444;
+        color: white;
+      }
+      #prediction {
+        font-size: 24px;
+        margin: 20px;
+      }
+      .status {
+        color: #666;
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Speaker Recognition System</h1>
+    <button class="button" onclick="trainModel()">Train Model</button>
+    <button class="button" id="recordButton" onclick="toggleRecording()">
+      Start Recording
+    </button>
+    <div id="prediction">Prediction: Waiting for recording to start...</div>
+    <div id="status" class="status"></div>
+
+    <script>
+      const socket = io();
+      let isRecording = false;
+
+      socket.on("connect", () => {
+        console.log("Connected to server");
+        updateStatus("Connected to server");
+      });
+
+      socket.on("prediction", (data) => {
+        document.getElementById("prediction").innerText =
+          "Prediction: " + data.prediction;
+      });
+
+      function updateStatus(message) {
+        document.getElementById("status").innerText = message;
+      }
+
+      function trainModel() {
+        updateStatus("Training model...");
+        fetch("/train", {
+          method: "POST",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              updateStatus("Training completed!");
+            } else {
+              updateStatus("Training failed: " + data.error);
+            }
+          });
+      }
+
+      function toggleRecording() {
+        const button = document.getElementById("recordButton");
+
+        if (!isRecording) {
+          fetch("/start_recording", { method: "POST" }).then((response) => {
+            isRecording = true;
+            button.innerText = "Stop Recording";
+            button.classList.add("recording");
+            updateStatus("Recording...");
+          });
+        } else {
+          fetch("/stop_recording", { method: "POST" }).then((response) => {
+            isRecording = false;
+            button.innerText = "Start Recording";
+            button.classList.remove("recording");
+            document.getElementById("prediction").innerText =
+              "Prediction: Waiting for recording to start...";
+            updateStatus("Recording stopped");
+          });
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -127,132 +127,100 @@ const TrainNewModelPage = () => {
   return (
     <div>
       <Header />
-      <div className="container py-4 min-vh-100" style={{ maxWidth: "1000px" }}>
+      <div className="container py-4 min-vh-100" style={{ maxWidth: "800px" }}>
         <h1 className="text-center mb-4 poppins-regular">Train a new model</h1>
         <p className="poppins-regular">
-          First, add the people you want to analyze with their names. Then you
-          need to record the voice for each character. Please read the following
-          paragraph while recording the voice. After reading the paragraph for
-          each character and recording the voices '' You can click on the “Start
-          training” button. Forbest results we recommend 80 seconds of audio
-          recordings.
+          Add the names of the speakers and record their voice samples. Each
+          recording should be around 80 seconds long.
         </p>
-        <div className="row">
-          <div className="col-6">
-            <div className="card mb-3">
-              <div className="card-header bg-primary text-white py-2">
-                <h5 className="mb-0 poppins-bold"> Add Characters</h5>
-              </div>
-              <div className="card-body py-2">
-                <div className="mb-2">
-                  <div className="input-group input-group-sm">
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Add character name"
-                      value={characterName}
-                      onChange={(e) => setCharacterName(e.target.value)}
-                    />
-                    <button
-                      className="btn bg-tertiary poppins-regular"
-                      onClick={handleCharacterAdd}
-                      disabled={!isStep2Enabled || !characterName.trim()}
-                    >
-                      Add
-                    </button>
-                  </div>
-                </div>
 
-                {/* Character List with Recording Controls */}
-                <div
-                  className="character-list"
-                  style={{ maxHeight: "300px", overflowY: "auto" }}
+        <div className="card mb-3">
+          <div className="card-header bg-primary text-white py-2">
+            <h5 className="mb-0 poppins-bold"> Add Characters</h5>
+          </div>
+          <div className="card-body py-2">
+            <div className="mb-2">
+              <div className="input-group input-group-sm">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Add character name"
+                  value={characterName}
+                  onChange={(e) => setCharacterName(e.target.value)}
+                />
+                <button
+                  className="btn bg-tertiary poppins-regular"
+                  onClick={handleCharacterAdd}
+                  disabled={!isStep2Enabled || !characterName.trim()}
                 >
-                  {characters.map((character) => (
-                    <div key={character.id} className="card mb-2">
-                      <div className="card-body p-2">
-                        <div className="d-flex justify-content-between align-items-center">
-                          <h6 className="mb-0 poppins-bold">
-                            {character.name}
-                          </h6>
-                          <div className="d-flex gap-2">
-                            {character.recordingStatus === "not_recorded" && (
-                              <button
-                                className="btn btn-sm btn-primary"
-                                onClick={() =>
-                                  handleStartRecording(character.id)
-                                }
-                                disabled={isRecording}
-                              >
-                                Start Recording
-                              </button>
-                            )}
-
-                            {character.recordingStatus === "recording" &&
-                              recordingForId === character.id && (
-                                <div className="d-flex align-items-center gap-2">
-                                  <span className="text-primary">
-                                    {recordingTime}/{MAX_RECORDING_TIME}s
-                                  </span>
-                                  <button
-                                    className="btn btn-sm btn-danger"
-                                    onClick={() =>
-                                      handleStopRecording(character.id)
-                                    }
-                                  >
-                                    Stop Recording
-                                  </button>
-                                </div>
-                              )}
-
-                            {character.recordingStatus === "recorded" && (
-                              <div className="d-flex align-items-center gap-2">
-                                <button
-                                  className="btn btn-sm btn-success"
-                                  onClick={() => handlePlayAudio(character.id)}
-                                  disabled={playingAudioId === character.id}
-                                >
-                                  {playingAudioId === character.id
-                                    ? "Playing..."
-                                    : "Play"}
-                                </button>
-                                <button
-                                  className="btn btn-sm btn-outline-primary"
-                                  onClick={() =>
-                                    handleStartRecording(character.id)
-                                  }
-                                  disabled={isRecording}
-                                >
-                                  Re-record
-                                </button>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                  Add
+                </button>
               </div>
             </div>
-            {!canTrainModel && (
-              <p className="text-danger mt-2 poppins-regular">
-                Please add at least 2 characters and record audio for all of
-                them.
-              </p>
-            )}
-          </div>
-          <div className="col-6">
-            <div className="card p-4 mb-4">
-              <p className="poppins-regular">
-                The weather today is very nice. The sun is shining, and the sky
-                is clear. I decided to go to the park and enjoy the day. At the
-                park, I saw children playing and people walking their dogs. I
-                sat on a bench and watched the birds flying in the sky. The cool
-                breeze felt good on my face. I took some pictures of the flowers
-                and trees. Nature is so beautiful, and it makes me feel happy
-                and calm. I plan to visit the park again tomorrow.
-              </p>
+
+            {/* Character List with Recording Controls */}
+            <div
+              className="character-list"
+              style={{ maxHeight: "300px", overflowY: "auto" }}
+            >
+              {characters.map((character) => (
+                <div key={character.id} className="card mb-2">
+                  <div className="card-body p-2">
+                    <div className="d-flex justify-content-between align-items-center">
+                      <h6 className="mb-0 poppins-bold">{character.name}</h6>
+                      <div className="d-flex gap-2">
+                        {character.recordingStatus === "not_recorded" && (
+                          <button
+                            className="btn btn-sm btn-primary"
+                            onClick={() => handleStartRecording(character.id)}
+                            disabled={isRecording}
+                          >
+                            Start Recording
+                          </button>
+                        )}
+
+                        {character.recordingStatus === "recording" &&
+                          recordingForId === character.id && (
+                            <div className="d-flex align-items-center gap-2">
+                              <span className="text-primary">
+                                {recordingTime}/{MAX_RECORDING_TIME}s
+                              </span>
+                              <button
+                                className="btn btn-sm btn-danger"
+                                onClick={() =>
+                                  handleStopRecording(character.id)
+                                }
+                              >
+                                Stop Recording
+                              </button>
+                            </div>
+                          )}
+
+                        {character.recordingStatus === "recorded" && (
+                          <div className="d-flex align-items-center gap-2">
+                            <button
+                              className="btn btn-sm btn-success"
+                              onClick={() => handlePlayAudio(character.id)}
+                              disabled={playingAudioId === character.id}
+                            >
+                              {playingAudioId === character.id
+                                ? "Playing..."
+                                : "Play"}
+                            </button>
+                            <button
+                              className="btn btn-sm btn-outline-primary"
+                              onClick={() => handleStartRecording(character.id)}
+                              disabled={isRecording}
+                            >
+                              Re-record
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -266,6 +234,11 @@ const TrainNewModelPage = () => {
           >
             Start Training
           </button>
+          {!canTrainModel && (
+            <p className="text-danger mt-2 poppins-regular">
+              Please add at least 2 characters and record audio for all of them.
+            </p>
+          )}
         </div>
       </div>
       <Footer />
